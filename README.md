@@ -10,3 +10,4 @@ It showcases my projects and skills.
 
 ## Author
 Saleeth Umar
+index.html
