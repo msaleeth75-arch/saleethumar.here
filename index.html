@@ -1,216 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional CS Student Portfolio - Showcasing innovative projects and technical expertise in a futuristic interface.">
-    <title>Saleeth | Future Engineer Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AutoSwift Mangalore</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="dark-theme">
-    <div class="cursor-glow"></div>
-    
-    <nav id="navbar">
-        <div class="logo">SALEETH<span>_V1.0</span></div>
-        <ul class="nav-links">
-            <li><a href="#about" class="nav-item">About</a></li>
-            <li><a href="#tech" class="nav-item">Tech Stack</a></li>
-            <li><a href="#projects" class="nav-item">Projects</a></li>
-            <li><a href="#github" class="nav-item">GitHub</a></li>
-            <li><a href="#contact" class="nav-item">Contact</a></li>
-            <li><a href="resume.pdf" class="btn-resume">Resume <i class="fas fa-download"></i></a></li>
-        </ul>
-        <div class="burger">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="location-selector">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div>
+        <div class="font-bold text-sm">Mangalore <span class="text-primary">▼</span></div>
+        <div class="text-xs text-muted">Kankanady, 575002</div>
+      </div>
+    </div>
+    <div class="user-profile-icon" onclick="app.navigate('profile')">
+      <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--border-color); display: flex; justify-content: center; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <div class="container" id="app-container">
+    <!-- View: Home -->
+    <div id="view-home" class="view">
+      <!-- Search Bar -->
+      <div class="search-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="search-input" placeholder="Search for brake pads, engine oil..." onfocus="app.navigate('search')">
+      </div>
+
+      <!-- Garage Banner -->
+      <div class="garage-banner" onclick="app.openGarage()">
+        <div>
+          <h3 class="text-primary" style="margin-bottom: 4px;" id="garage-title">My Garage</h3>
+          <p class="text-xs text-muted" id="garage-subtitle">Select vehicle for perfect fit parts</p>
         </div>
-    </nav>
+        <button class="btn btn-sm">Select</button>
+      </div>
 
-    <header class="hero">
-        <div class="hero-content">
-            <div class="glitch-wrapper">
-                <h1 class="glitch" data-text="HELLO, I'M SALEETH">HELLO, I'M SALEETH</h1>
-            </div>
-            <p class="subtitle">1st Year ISE Student | Building the future, one line of code at a time.</p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-            </div>
+      <!-- Categories -->
+      <h3 style="margin-bottom: 12px; font-size: 1rem;">Categories</h3>
+      <div class="categories-scroll" id="category-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Feed -->
+      <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+        <h3 style="font-size: 1rem;" id="feed-title">Recommended Parts</h3>
+        <span class="text-xs text-primary font-bold">View All</span>
+      </div>
+      
+      <div class="product-grid" id="product-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- View: Search -->
+    <div id="view-search" class="view hidden">
+      <div class="search-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="live-search-input" class="search-input" placeholder="Type to search..." autocomplete="off">
+        <div id="search-suggestions" class="search-suggestions hidden"></div>
+      </div>
+      <h3 style="margin-bottom: 16px; font-size: 1rem;">Search Results</h3>
+      <div class="product-grid" id="search-results">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- View: Cart -->
+    <div id="view-cart" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Your Cart</h2>
+      <div id="cart-items">
+        <!-- Rendered by JS -->
+      </div>
+      
+      <div id="cart-summary" class="hidden" style="margin-top: 24px; background: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 12px; font-size: 1rem;">Bill Details</h3>
+        <div class="flex justify-between text-sm" style="margin-bottom: 8px;"><span>Item Total</span><span id="cart-subtotal">₹0</span></div>
+        <div class="flex justify-between text-sm" style="margin-bottom: 8px;"><span>Delivery Fee</span><span class="text-success">FREE</span></div>
+        <hr style="border-color: var(--border-color); margin: 12px 0;">
+        <div class="flex justify-between font-bold" style="font-size: 1.1rem;"><span>To Pay</span><span id="cart-total">₹0</span></div>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="margin-bottom: 8px; font-size: 0.9rem;">Payment Method</h4>
+          <select id="payment-method" style="margin-bottom: 16px;">
+            <option value="UPI">UPI (Google Pay, PhonePe)</option>
+            <option value="COD">Cash on Delivery</option>
+            <option value="CARD">Credit/Debit Card</option>
+          </select>
+          <button class="btn" style="width: 100%;" onclick="app.placeOrder()">Place Order</button>
         </div>
-        <div class="hero-visual">
-            <div class="neon-circle"></div>
-            <div class="neon-circle"></div>
+      </div>
+
+      <div id="empty-cart" class="text-center" style="margin-top: 40px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-muted" style="margin: 0 auto 16px;"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <h3 class="text-muted">Your cart is empty</h3>
+        <button class="btn btn-outline" style="margin-top: 16px;" onclick="app.navigate('home')">Browse Parts</button>
+      </div>
+    </div>
+
+    <!-- View: Track Order -->
+    <div id="view-track" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Track Order</h2>
+      <div id="active-order-container" class="hidden">
+        <div id="map"></div>
+        <div class="card">
+          <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+            <h3 style="font-size: 1rem;">Order <span id="track-order-id" class="text-primary">#ORD123</span></h3>
+            <span id="track-order-eta" class="text-sm font-bold">ETA: 45 mins</span>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item" id="status-pending">
+              <div class="font-bold text-sm">Order Placed</div>
+              <div class="text-xs text-muted">We have received your order</div>
+            </div>
+            <div class="timeline-item" id="status-processing">
+              <div class="font-bold text-sm">Packed & Ready</div>
+              <div class="text-xs text-muted">Items are packed at our Mangalore hub</div>
+            </div>
+            <div class="timeline-item" id="status-out_for_delivery">
+              <div class="font-bold text-sm">Out for Delivery</div>
+              <div class="text-xs text-muted">Agent is on the way</div>
+            </div>
+            <div class="timeline-item" id="status-delivered">
+              <div class="font-bold text-sm">Delivered</div>
+              <div class="text-xs text-muted">Package handed over to customer</div>
+            </div>
+          </div>
         </div>
-    </header>
+      </div>
+      <div id="no-active-order" class="text-center text-muted" style="margin-top: 40px;">
+        <p>No active orders found.</p>
+      </div>
+    </div>
 
-    <main>
-        <section id="about" class="section">
-            <h2 class="section-title">01. ABOUT ME</h2>
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>I'm Saleeth, a dedicated 1st year ISE (Information Science & Engineering) student. My journey in technology is just beginning, and I am deeply committed to mastering the fundamentals of engineering and software development.</p>
-                    <p>Currently, I'm exploring various programming languages and engineering principles, aiming to build a strong foundation for a career in innovation and problem-solving.</p>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-card">
-                        <span class="stat-num">3+</span>
-                        <span class="stat-label">Years Coding</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-num">15+</span>
-                        <span class="stat-label">Projects Built</span>
-                    </div>
-                </div>
+    <!-- View: Profile -->
+    <div id="view-profile" class="view hidden">
+      <h2 style="margin-bottom: 24px;">Profile</h2>
+      <div class="flex items-center gap-4" style="margin-bottom: 32px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background-color: var(--primary); color: #000; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold;">
+          JD
+        </div>
+        <div>
+          <h3 style="font-size: 1.2rem;">John Doe</h3>
+          <p class="text-muted text-sm">+91 98765 43210</p>
+        </div>
+      </div>
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="flex justify-between items-center" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" onclick="app.navigate('track')">
+          <div class="flex items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>My Orders</span>
+          </div>
+          <span class="text-muted">➔</span>
+        </div>
+        <div class="flex justify-between items-center" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;">
+          <div class="flex items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Saved Addresses</span>
+          </div>
+          <span class="text-muted">➔</span>
+        </div>
+        <a href="admin.html" target="_blank" style="text-decoration: none; color: inherit;">
+          <div class="flex justify-between items-center" style="padding: 16px; cursor: pointer;">
+            <div class="flex items-center gap-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              <span>Admin Dashboard</span>
             </div>
-        </section>
+            <span class="text-muted">➔</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
-        <section id="tech" class="section">
-            <h2 class="section-title">02. TECH STACK</h2>
-            <div class="tech-grid">
-                <div class="tech-category">
-                    <h3>Languages</h3>
-                    <div class="tech-icons">
-                        <div class="tech-item" title="Python"><i class="fab fa-python"></i><span>Python</span></div>
-                        <div class="tech-item" title="JavaScript"><i class="fab fa-js"></i><span>JavaScript</span></div>
-                        <div class="tech-item" title="C++"><i class="fas fa-code"></i><span>C++</span></div>
-                        <div class="tech-item" title="Java"><i class="fab fa-java"></i><span>Java</span></div>
-                    </div>
-                </div>
-                <div class="tech-category">
-                    <h3>Frontend</h3>
-                    <div class="tech-icons">
-                        <div class="tech-item" title="React"><i class="fab fa-react"></i><span>React</span></div>
-                        <div class="tech-item" title="HTML5"><i class="fab fa-html5"></i><span>HTML5</span></div>
-                        <div class="tech-item" title="CSS3"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
-                    </div>
-                </div>
-                <div class="tech-category">
-                    <h3>Backend & Tools</h3>
-                    <div class="tech-icons">
-                        <div class="tech-item" title="Node.js"><i class="fab fa-node-js"></i><span>NodeJS</span></div>
-                        <div class="tech-item" title="Docker"><i class="fab fa-docker"></i><span>Docker</span></div>
-                        <div class="tech-item" title="Git"><i class="fab fa-git-alt"></i><span>Git</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item active" id="nav-home" onclick="app.navigate('home')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="nav-item" id="nav-search" onclick="app.navigate('search')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span>Search</span>
+    </a>
+    <a class="nav-item" id="nav-cart" onclick="app.navigate('cart')" style="position: relative;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      <span>Cart</span>
+      <div id="cart-badge" class="nav-badge hidden">0</div>
+    </a>
+    <a class="nav-item" id="nav-track" onclick="app.navigate('track')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"/></svg>
+      <span>Track</span>
+    </a>
+  </nav>
 
-        <section id="projects" class="section">
-            <h2 class="section-title">03. PROJECTS</h2>
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="https://via.placeholder.com/400x250/121212/00f3ff?text=Cyber+App" alt="Project 1">
-                        <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fas fa-external-link-alt"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3>Cyber-Link Platform</h3>
-                        <p>A decentralized communication tool built for secure data exchange using end-to-end encryption.</p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>WebRTC</span>
-                        </div>
-                    </div>
-                </div>
+  <!-- Garage Modal -->
+  <div id="modal-garage" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="display: flex; align-items: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Select Vehicle
+        </h2>
+        <button class="close-modal" onclick="app.closeGarage()">×</button>
+      </div>
+      <div class="input-group">
+        <label>Type</label>
+        <select id="garage-type">
+          <option value="Car">Car</option>
+          <option value="Bike">Bike</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Brand</label>
+        <select id="garage-brand">
+          <option value="Maruti">Maruti Suzuki</option>
+          <option value="Honda">Honda</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Royal Enfield">Royal Enfield</option>
+          <option value="KTM">KTM</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Model</label>
+        <input type="text" id="garage-model" placeholder="e.g. Swift, City, Classic 350">
+      </div>
+      <button class="btn" style="width: 100%; margin-top: 16px;" onclick="app.saveGarage()">Find Compatible Parts</button>
+    </div>
+  </div>
 
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="https://via.placeholder.com/400x250/121212/bc13fe?text=Neural+Net" alt="Project 2">
-                        <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fas fa-external-link-alt"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3>Neural Visualizer</h3>
-                        <p>An interactive dashboard to visualize neural network weights and biases in real-time.</p>
-                        <div class="project-tech">
-                            <span>Python</span>
-                            <span>TensorFlow</span>
-                            <span>D3.js</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <div class="project-img-wrapper">
-                        <img src="https://via.placeholder.com/400x250/121212/f3ee06?text=Quantum+Ledger" alt="Project 3">
-                        <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fas fa-external-link-alt"></i></a>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3>Quantum Ledger</h3>
-                        <p>A lightweight blockchain implementation focused on high-speed transactions and low latency.</p>
-                        <div class="project-tech">
-                            <span>Go</span>
-                            <span>gRPC</span>
-                            <span>LevelDB</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="github" class="section">
-            <h2 class="section-title">04. GITHUB</h2>
-            <div class="github-container">
-                <div class="github-card neon-border">
-                    <i class="fab fa-github github-icon"></i>
-                    <h3>Check out my repositories</h3>
-                    <p>I'm active on GitHub, contributing to open-source projects and sharing my latest experiments.</p>
-                    <a href="https://github.com" target="_blank" class="btn btn-neon">Follow @username</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section">
-            <h2 class="section-title">05. GET IN TOUCH</h2>
-            <div class="contact-container">
-                <form class="contact-form">
-                    <div class="input-group">
-                        <input type="text" id="name" required placeholder=" ">
-                        <label for="name">Name</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="email" id="email" required placeholder=" ">
-                        <label for="email">Email</label>
-                    </div>
-                    <div class="input-group">
-                        <textarea id="message" required placeholder=" "></textarea>
-                        <label for="message">Message</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">SEND SIGNAL</button>
-                </form>
-                <div class="social-links">
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>Designed & Built by Saleeth &copy; 2026</p>
-        <p class="footer-note">Built with <i class="fas fa-heart"></i> & Futuristic Vibes</p>
-    </footer>
-
-    <script src="script.js"></script>
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
