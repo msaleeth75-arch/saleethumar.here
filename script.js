@@ -1,115 +1,94 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Cursor Glow Effect
-    const cursor = document.querySelector('.cursor-glow');
-    
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+
+    // ── Cursor Glow ──────────────────────────────────────
+    const glow = document.getElementById('cursorGlow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
     });
 
-    // Navbar scroll effect
-    const nav = document.querySelector('nav');
+    // ── Mobile Nav ───────────────────────────────────────
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger?.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // ── Navbar Scroll Shrink ──────────────────────────────
+    const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            nav.style.padding = '1rem 5%';
-            nav.style.background = 'rgba(10, 10, 12, 0.95)';
+        if (window.scrollY > 60) {
+            navbar.style.borderBottomColor = 'rgba(255,255,255,0.06)';
         } else {
-            nav.style.padding = '1.5rem 5%';
-            nav.style.background = 'rgba(10, 10, 12, 0.8)';
+            navbar.style.borderBottomColor = 'rgba(255,255,255,0.08)';
         }
     });
 
-    // Mobile Menu Toggle (Simplified)
-    const burger = document.querySelector('.burger');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (burger) {
-        burger.addEventListener('click', () => {
-            navLinks.classList.toggle('nav-active');
-            burger.classList.toggle('toggle');
-        });
-    }
+    // ── Smooth Active Nav Highlight ───────────────────────
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const navItems = document.querySelectorAll('.nav-item');
 
-    // Scroll Reveal Animation (Intersection Observer)
-    const observerOptions = {
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
+    const sectionObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('reveal-visible');
+                navItems.forEach(link => {
+                    link.style.color = '';
+                    if (link.getAttribute('href') === '#' + entry.target.id) {
+                        link.style.color = 'var(--neon-blue)';
+                    }
+                });
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.4 });
 
-    // Apply reveal to sections and cards
-    document.querySelectorAll('.section, .project-card, .stat-card, .tech-item').forEach(el => {
-        el.classList.add('reveal');
-        observer.observe(el);
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // ── Scroll Reveal Animations ──────────────────────────
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+        revealObserver.observe(el);
     });
 
-    // Contact Form Handling
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            
-            // Simple visual feedback
-            const submitBtn = contactForm.querySelector('button');
-            const originalText = submitBtn.innerText;
-            
-            submitBtn.innerText = 'SIGNAL SENT...';
-            submitBtn.style.background = '#bc13fe';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert(`Thanks ${name}! Your signal has been transmitted.`);
-                contactForm.reset();
-                submitBtn.innerText = originalText;
-                submitBtn.style.background = '';
-                submitBtn.disabled = false;
-            }, 1500);
+    // ── Project card tilt on hover ────────────────────────
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const rotateX = ((y - cy) / cy) * -6;
+            const rotateY = ((x - cx) / cx) * 6;
+            card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
-    }
-
-    // Smooth Scrolling for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
         });
     });
+
+    // ── Contact Form ──────────────────────────────────────
+    const form = document.querySelector('.contact-form');
+    form?.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+        btn.style.background = 'linear-gradient(135deg, #00ff87, #00f3ff)';
+        setTimeout(() => {
+            btn.innerHTML = 'Send Message <i class="fas fa-paper-plane"></i>';
+            btn.style.background = '';
+            form.reset();
+        }, 3000);
+    });
+
 });
-
-// Add CSS for Reveal animation dynamically
-const style = document.createElement('style');
-style.textContent = `
-    .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s ease-out;
-    }
-    .reveal-visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .nav-active {
-        display: flex !important;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--bg-color);
-        padding: 2rem;
-        border-bottom: 1px solid var(--neon-cyan);
-    }
-`;
-document.head.appendChild(style);
