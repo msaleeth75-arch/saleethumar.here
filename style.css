@@ -545,39 +545,34 @@ body {
 }
 
 .project-links {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    opacity: 0;
-    transition: var(--transition);
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
 }
 
-.project-card:hover .project-links { opacity: 1; }
-
 .project-links a {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 16px;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
     text-decoration: none;
     transition: var(--transition);
 }
 
 .project-links a:hover {
-    background: var(--neon-blue);
+    background: rgba(0,243,255,0.08);
     border-color: var(--neon-blue);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: 0 0 15px rgba(0,243,255,0.15);
+    transform: translateY(-2px);
 }
 
 .project-info {
